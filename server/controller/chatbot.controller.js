@@ -25,7 +25,7 @@ export const chatbot = async (req, res) => {
         {
           role: "system",
           content:
-            "You are an expert AI farming assistant. Help farmers with crop diseases, fertilizers, irrigation, weather impacts, pest control, and sustainable agriculture practices.",
+            "You are an expert AI Healthcare assistant. Help patients with medical conditions, treatments, medications, and health management.",
         },
         {
           role: "user",
