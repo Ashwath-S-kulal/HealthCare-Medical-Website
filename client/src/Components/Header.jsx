@@ -177,7 +177,7 @@ export default function Header() {
                         {!currentUser && <span className="text-[9px] lowercase font-normal ml-1">(Login required)</span>}
                     </button>
 
-                    {showAssistant && currentUser && (
+                    {showAssistant && (
                         <div className="absolute right-0 mt-3 w-72 md:w-96 bg-white border border-slate-200 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex flex-col h-[480px] animate-in fade-in zoom-in-95 duration-300 overflow-hidden">
 
                             {/* Header with Gradient */}
@@ -194,30 +194,22 @@ export default function Header() {
                             </div>
 
                             <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-50/50 scrollbar-thin scrollbar-thumb-slate-200">
-                                {!currentUser ? (
-                                    <div className="flex h-full items-center justify-center text-center p-4">
-                                        <p className="text-xs font-bold text-slate-500">Please log in to use the chatbot.</p>
+                                {messages.map((m, i) => (
+                                    <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`px-4 py-2.5 rounded-2xl text-xs max-w-[85%] leading-relaxed shadow-sm ${m.role === 'user'
+                                            ? 'bg-indigo-600 text-white rounded-tr-none'
+                                            : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none'
+                                            }`}>
+                                            {m.content}
+                                        </div>
                                     </div>
-                                ) : (
-                                    <>
-                                        {messages.map((m, i) => (
-                                            <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                                <div className={`px-4 py-2.5 rounded-2xl text-xs max-w-[85%] leading-relaxed shadow-sm ${m.role === 'user'
-                                                    ? 'bg-indigo-600 text-white rounded-tr-none'
-                                                    : 'bg-white text-slate-700 border border-slate-200 rounded-tl-none'
-                                                    }`}>
-                                                    {m.content}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {isTyping && (
-                                            <div className="text-[10px] text-slate-400 font-bold flex gap-1 items-center px-2">
-                                                <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce" />
-                                                <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                                                <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]" />
-                                            </div>
-                                        )}
-                                    </>
+                                ))}
+                                {isTyping && (
+                                    <div className="text-[10px] text-slate-400 font-bold flex gap-1 items-center px-2">
+                                        <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce" />
+                                        <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce [animation-delay:0.2s]" />
+                                        <span className="w-1 h-1 bg-slate-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                                    </div>
                                 )}
                             </div>
 
@@ -226,15 +218,13 @@ export default function Header() {
                                     <input
                                         value={input}
                                         onChange={(e) => setInput(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && user && sendMessage()}
-                                        disabled={!user}
-                                        className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400 disabled:opacity-50 disabled:cursor-not-allowed"
-                                        placeholder={user ? "Ask clinical queries..." : "Please log in to chat"}
+                                        onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                                        className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+                                        placeholder="Ask clinical queries..."
                                     />
                                     <button
                                         onClick={sendMessage}
-                                        disabled={!user}
-                                        className="absolute right-2 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="absolute right-2 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                                     >
                                         <ChevronRight size={14} />
                                     </button>
